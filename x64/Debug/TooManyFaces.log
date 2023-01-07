@@ -1,0 +1,161 @@
+﻿  Character.cpp
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(27,13): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(31,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(47,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(98,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(101,49): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(103,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(135,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,56): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(148,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(149,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(178,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(192,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,56): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,55): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(229,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(275,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  GamManager.cpp
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(27,13): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(31,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(47,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(98,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(101,49): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(103,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(135,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,56): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(148,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(149,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(178,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(192,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,56): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,55): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(229,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(275,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(30,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(72,21): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(254,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(279,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(292,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(306,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(316,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(325,53): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(331,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(332,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(341,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(342,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(355,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(356,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(357,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(358,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(364,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(365,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(366,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(367,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(371,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(377,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(407,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(449,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(460,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(461,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(516,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(521,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(546,1): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(562,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(582,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(583,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(586,197): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(595,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(596,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(598,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(599,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(601,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(610,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(610,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  MainClass.cpp
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(27,13): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(31,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(47,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(98,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(101,49): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(103,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(135,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(137,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,56): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(138,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(148,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(149,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(178,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(192,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(194,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(195,56): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(197,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,55): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(198,61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(229,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\Character.h(275,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(30,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(72,21): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(254,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(279,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(292,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(306,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(316,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(325,53): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(331,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(332,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(341,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(342,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(355,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(356,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(357,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(358,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(364,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(365,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(366,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(367,15): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(371,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(377,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(407,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(449,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(460,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(461,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(516,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(521,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(546,1): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(562,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(582,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(583,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(586,197): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(595,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(596,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(598,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(599,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(601,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(610,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Unreal\source\repos\TooManyFaces\TooManyFaces\GamManager.h(610,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  PictureManager.cpp
+  Generating Code...
+  TooManyFaces.vcxproj -> C:\Users\Unreal\source\repos\TooManyFaces\x64\Debug\TooManyFaces.exe
