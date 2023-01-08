@@ -15,11 +15,13 @@ class GamManager
 
 public:
 	
-	float scale = 1;
-	int characterNum = 500;
+	float scale = 1.5;
+	int characterNum = 100;
 	float xOffset = 0;
 	float yOffset = 0;
 
+	//
+	bool singlePlayer = false;
 	//Scope stuff
 	float xOffsetS = 0;
 	float yOffsetS = 0;
@@ -44,6 +46,7 @@ public:
 	Texture2D bloodT;
 	Texture2D darkScopeT;
 	Texture2D gunShotT;
+	Texture2D arrowT;
 
 	//Assassin varibles
 	enum killTypes{stab,shoot,poison };
@@ -90,6 +93,7 @@ public:
 		darkScopeT = LoadTexture("./assets/scope4.png");
 		bloodT = LoadTexture("./assets/blood.png");
 		gunShotT = LoadTexture("./assets/gunShot.png");
+		arrowT = LoadTexture("./assets/arrow.png");
 
 		//Game restart loop
 		while (!WindowShouldClose()) {
@@ -117,14 +121,17 @@ public:
 		}
 
 		//Set up player character
-		//characters[0].setUpPlayer();
+		if (!singlePlayer) {
+			characters[0].setUpPlayer();
+		}
 
 		//Load hints
-		Texture2D* info1 = (characters[0].characerParts[GetRandomValue(0, 7)]);//
-		Texture2D* info2 = (characters[0].characerParts[GetRandomValue(0, 7)]);
+		int h1 = GetRandomValue(0, 7);
+		int h2 = getHintTwo(h1);
+		Texture2D* info1 = characters[0].characerParts[h1];//
+		Texture2D* info2 = characters[0].characerParts[h2];
 		//Contact person
-		Texture2D* info3 = (characters[1].characerParts[GetRandomValue(0, 7)]);//
-		Texture2D* info4 = (characters[1].characerParts[GetRandomValue(0, 7)]);
+		Texture2D* info3 = (characters[0].characerParts[getHintThree(h1,h2)]);
 		
 		//std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
@@ -152,8 +159,11 @@ public:
 				DrawScope(scopeT);
 			}
 
+			if (paused) {
+				DrawPic(&arrowT, 1400*zscale(&characters[0]), 1400*zscale(&characters[0]), (characters[0].x + xOffset) * scale, (characters[0].y + yOffset) * scale, 1, WHITE);
+			}
 
-			DrawInfo(characters, info1, info2, info3, info4);
+			DrawInfo(characters, info1, info2, info3);
 
 			//end the drawing
 			EndDrawing();
@@ -161,6 +171,26 @@ public:
 
 		}
 
+	}
+
+
+	int getHintTwo(int h1) {
+
+		int h2 = GetRandomValue(0, 7);
+
+		if (h2 == h1) {
+			return getHintTwo(h1);
+		}
+		else {
+			return h2;
+		}
+	}
+	int getHintThree(int h1, int h2) {
+
+		if (h1 == 2 || h1 == 3 || h2 == 2 || h2 == 3) {
+			return getHintTwo(2);
+		}
+		return 2;
 	}
 
 	void DoLogic(Character characters[]) {
@@ -413,7 +443,7 @@ public:
 		c->y += c->v.y * c->speed * zscale(c) * 2;
 	}
 
-	void DrawInfo(Character ch[], Texture2D * info1, Texture2D * info2, Texture2D* info3, Texture2D* info4) {
+	void DrawInfo(Character ch[], Texture2D * info1, Texture2D * info2, Texture2D* info3) {
 		
 		int theDead = 0;
 		for (int i = 0; i < characterNum; i++) {
@@ -445,8 +475,11 @@ public:
 		if (!paused) {
 			DrawClue(info1, 0);
 			DrawClue(info2, 0);
+			DrawClue(info3, 0);
 			for (int i = 0; i < 8; i++) {
-				DrawClue(ch[0].characerParts[i], GetScreenWidth() - 400);
+				int clueN = 1;
+				if (singlePlayer) { clueN = 0; }
+				DrawClue(ch[1].characerParts[i], GetScreenWidth() - 400);
 
 			}
 		}
@@ -455,14 +488,18 @@ public:
 		/////////WIN CONDITIONS
 		DrawWinConditions(ch, theDead);
 	}
+	void DrawPic(Texture2D* t, float w, float h, float x, float y, int center, Color color) {
+
+		float wPicture = t->width;
+		float hPicture = t->height;
+		float drawW = w;
+		float drawH = h;
+		DrawTexturePro(*t, Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ x,y,drawW,drawH }, Vector2{ drawW/2* center,drawH/2*center }, 0, color);
+
+	}
 	void DrawClue(Texture2D* sT, float xoff) {
 		
-		float wPicture = sT->width;
-		float hPicture = sT->height;
-		float drawW = 200;
-		float drawH = 300;
-		DrawTexturePro(*sT, Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ (float)(100) + xoff,(float)(230),drawW,drawH }, Vector2{ 0,0 }, 0, WHITE);
-		
+		DrawPic(sT, 200, 300, (float)(100) + xoff, 230, 0, WHITE);
 	}
 	void DrawWinConditions(Character ch[], int theDead) {
 		//SNIPER WINS!!

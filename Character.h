@@ -96,12 +96,7 @@ public:
 		player = true;
 
 		MaxV = GetRandomValue(1500, 2000) / 1000;
-		int ran = GetRandomValue(0, 1);
-		if (ran == 0) {
-			x = (GetScreenWidth()-GetRandomValue(0, 200))*2;
-		}else if (ran == 1) {
-			x = GetRandomValue(0, 200) * 2;
-		}
+
 		for (int i = 0; i < 8; i++) {
 			characterColor[i] = BLACK;
 			partRotation[i] = 0;
