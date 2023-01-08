@@ -61,12 +61,21 @@ public:
 	Character* poisoned;
 	float poisonDelay = 0;
 
+	//Menu stuff
 	bool exitToMenu = false;
-
 	bool menu = true;
 	int clickedButton = 0;
 	float clickedButtonY = 0;
 	float arrowRot = 0;
+
+	//Cutscene
+	int scene = 0;
+	int continues = 0;
+	int stage = 0;
+	float timeCS = 0;
+	string message = "";
+	float charactersOfMessage = 0;
+	float messageSpeed = .32;
 
 	//early initialize
 	//bool touching(Character* c1, Character* c2);
@@ -213,6 +222,7 @@ public:
 				else if (clickedButton == 1) {
 					menu = false;
 					singlePlayer = true;
+					cutSceneFirst(pmanager);
 					break;
 				}
 			}
@@ -328,6 +338,148 @@ public:
 
 	}
 
+	void cutSceneFirst(PictureManager* pmanager) {
+
+
+		Texture2D menuBackdrop = LoadTexture("./assets/streat.png");
+
+		//Make character
+		scale = 6;
+		characterNum = 2;
+		Character* ch = new Character[characterNum];
+		//Set the picture manager
+		for (int i = 0; i < characterNum; i++) {
+			ch[i].pmanager = pmanager;
+			ch[i].scale = scale;
+			ch[i].StartCharacter();
+			ch[i].setUpPictures();
+		}
+
+		//Set starting locations
+		ch[0].x = GetScreenWidth() / 2/scale;
+		ch[0].y = GetScreenHeight() / 5*4 / scale;
+		ch[1].x = -130 / scale;
+		ch[1].y = GetScreenHeight() / 5 * 4 / scale;
+		ch[1].v.x = .5;
+		ch[0].v.x = .2;
+
+		ch[0].characerParts[4] = &(pmanager->mouth[6]);
+
+		timeCS = 0;
+
+		while(true){
+			
+			//============================Cutscene
+			
+			if (timeCS < 3) {
+				timeCS += GetFrameTime();
+				if (stage == 0) { message = "Your day was going terribly.\nYou had just got fired from your job.";stage++; charactersOfMessage = 0;
+				}
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+			}
+			else if (timeCS < 6) {
+				timeCS += GetFrameTime();
+				if (stage == 1) { message = "The $50 in your pocket was all you had to your name."; stage++; charactersOfMessage = 0;
+				}
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+			}
+			else if (timeCS < 11) {
+				timeCS += GetFrameTime();
+				if (stage == 2) { message = "But you decided to try to be happy anyway.\nAnd you started to smile."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+				if (ch[0].partRotation[4] < 520) {
+					ch[0].partRotation[4] += GetFrameTime() * 180;
+				}
+			}
+			else if (timeCS < 15 && continues > 0) {
+				timeCS += GetFrameTime();
+				if (stage == 3) { message = "You felt better for a little while...\nBut then a man began approuching..."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed/2;
+				}
+				if (ch[1].x < ch[0].x-20) {
+					ch[1].x += GetFrameTime() * ((ch[0].x - 20)-ch[1].x);
+				}
+			}
+			else if (timeCS < 20 && continues > 0) {
+				timeCS += GetFrameTime();
+				if (stage == 4) { message = "'GIVE ME ALL YOUR MONEY!' He yelled.             \nYou Felt your smile disappearing."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+				if (ch[0].partRotation[4] > 0) {
+					ch[0].partRotation[4] -= GetFrameTime() * 180;
+				}
+
+				ch[1].partRotation[4] = GetRandomValue(-10,10);
+				
+			}
+			else if (timeCS < 26 && continues > 0) {
+				timeCS += GetFrameTime();
+				if (stage == 5) { message = "Feeling his hard hand against your chest, anger flared up inside of you.\n What had you done to deserve how fate treated you!!!!!!!!!!!"; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+
+				for (int pa = 0; pa < 8; pa++) {
+					if (ch[0].partRotation[0] < 90) {
+						ch[0].partRotation[pa] += GetFrameTime() * 90*4;
+					}
+				}
+				if (ch[0].partRotation[0] < 90) {
+					ch[0].y += GetFrameTime() * 90;
+				}
+			}
+			else if (timeCS < 50 && continues > 0) {
+				timeCS += GetFrameTime();
+				if (stage == 6) { message = "'Come back! I need that money!' You heard your faint voice call after him...\nHe dissapeared into the distance.\nYou Felt bruised.\nYour left leg hurt a lot..."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed / 5;
+				}
+				if (ch[1].x > -5) {
+					ch[1].x -= GetFrameTime() * (-5-(ch[0].x));
+				}
+				ch[0].partRotation[4] = GetRandomValue(100, 80);
+			}
+			else {
+				if (IsKeyPressed(KEY_ENTER)) {
+					continues++;
+				}
+			}
+
+
+			//============================
+			
+			ch[0].animateWhileWalking();
+			ch[1].animateWhileWalking();
+
+			//Begin drawing
+			BeginDrawing();
+			//Clear the background
+			ClearBackground(BLACK);
+
+			//What to draw:
+			DrawPic(&menuBackdrop, GetScreenWidth(), GetScreenHeight(), 0, 0, 0, WHITE, 0);
+			//Draw Characters
+			DrawInHeightOrder(ch);
+
+			//Draw label
+			string text = message.substr(0,(int)charactersOfMessage);
+			char arr[400];
+			strcpy_s(arr, text.c_str());
+			DrawText(arr, 100, 100, 30, WHITE);
+
+			//end the drawing
+			EndDrawing();
+		}
+
+	}
 
 	int getHintTwo(int h1) {
 
