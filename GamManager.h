@@ -61,6 +61,12 @@ public:
 	Character* poisoned;
 	float poisonDelay = 0;
 
+	bool exitToMenu = false;
+
+	bool menu = true;
+	int clickedButton = 0;
+	float clickedButtonY = 0;
+	float arrowRot = 0;
 
 	//early initialize
 	//bool touching(Character* c1, Character* c2);
@@ -74,20 +80,17 @@ public:
 		//Create random seed
 		SetRandomSeed(time(0));
 
+		HideCursor();
 
+		//Set window icon
+		Image icon = LoadImage("./assets/iconWindow.png");
+		SetWindowIcon(icon);
 
 		//Load all images
 		PictureManager pmanager;
 
-		//Make character
-		Character* characters = new Character[characterNum];
-		//Set the picture manager
-		for (int i = 0; i < characterNum; i++) {
-			characters[i].pmanager = &pmanager;
-		}
 
-
-		//Make background scope and blood
+		//Load pictures for game
 		Texture2D streetT = LoadTexture("./assets/streat.png");
 		Texture2D scopeT = LoadTexture("./assets/scope3.png");
 		darkScopeT = LoadTexture("./assets/scope4.png");
@@ -95,21 +98,159 @@ public:
 		gunShotT = LoadTexture("./assets/gunShot.png");
 		arrowT = LoadTexture("./assets/arrow.png");
 
-		//Game restart loop
-		while (!WindowShouldClose()) {
+		MenuLoop(&pmanager, &streetT, &scopeT);
+	}
+	void MenuLoop(PictureManager* pmanager, Texture2D* streetT, Texture2D* scopeT) {
 
-			if (restartGame) {
-				restartGame = false;
-				//Set varibles
-				paused = true;
-				winner = 0;
-				timeTaken = 0;
-				shotsTaken = 0;
-				//Start game
-				PlayGame(&pmanager, characters, &streetT, &scopeT);
+
+		//Load menu picture
+		Texture2D menuBackdrop = LoadTexture("./assets/buildings.png");
+		Texture2D menuTitle = LoadTexture("./assets/TitlePic.png");
+		Texture2D menuSinglePlayer = LoadTexture("./assets/singlePlayerButton.png");
+		Texture2D menuMultiPlayer = LoadTexture("./assets/multiPlayerButton.png");
+		Texture2D targetT = LoadTexture("./assets/Target.png");
+		Texture2D howToPlayT = LoadTexture("./assets/howtoplay.png");
+
+		while (menu) {
+
+			//Get sniper aim
+			int  xc = (GetMouseX() + xOffsetS) - xOffset;
+			int  yc = (GetMouseY() + yOffsetS) - yOffset;
+
+			//Draw menu
+			//Begin drawing
+			BeginDrawing();
+			//Clear the background
+			ClearBackground(BLACK);
+
+			//What to draw:
+			DrawPic(&menuBackdrop, GetScreenWidth(), GetScreenHeight(), 0, 0, 0, WHITE, 0);
+			//Title
+			DrawPic(&menuTitle, 800, 160, GetScreenWidth() / 2, 200, 1, WHITE, 0);
+			//Buttons
+
+			int buttonHovering = 0;
+			//Check to see if mouse is hovering SINGLEPLAYER button
+			int spRot = 0;
+			float yMod = 0;
+			if (clickedButton == 1) {
+				clickedButtonY += 15;
+				yMod = clickedButtonY;
+				spRot = clickedButtonY;
 			}
+			else if (insidePic(239, 100, GetScreenWidth() / 2, 410, xc, yc, 1)) {
+				spRot = GetRandomValue(-3, 3);
+				buttonHovering = 1;
+			}
+			DrawPic(&menuSinglePlayer, 239, 100, GetScreenWidth() / 2, 410 + yMod, 1, WHITE, spRot);
+			//Check to see if mouse is hovering MULTIPLAYER button
+			spRot = 0;
+			yMod = 0;
+			if (clickedButton == 2) {
+				clickedButtonY += 15;
+				yMod = clickedButtonY;
+				spRot = clickedButtonY;
+			}
+			else if (insidePic(239, 100, GetScreenWidth() / 2, 550, xc, yc, 1)) {
+				spRot = GetRandomValue(-3, 3);
+				buttonHovering = 2;
+			}
+			DrawPic(&menuMultiPlayer, 239, 100, GetScreenWidth() / 2, 550 + yMod, 1, WHITE, spRot);
+			//Check to see if mouse is hovering SETTINGS button
+			spRot = 0;
+			yMod = 0;
+			if (clickedButton == 3) {
+				clickedButtonY += 15;
+				yMod = clickedButtonY;
+				spRot = clickedButtonY;
+			}
+			else if (insidePic(3 * 80, 3.6 * 80, GetScreenWidth() / 5, GetScreenHeight() * 2 / 4, xc, yc, 1)) {
+				spRot = GetRandomValue(-4, 4);
+				buttonHovering = 3;
+			}
+			DrawPic(&targetT, 3 * 80, 7.8 * 80, GetScreenWidth() / 5, GetScreenHeight() * 2 / 4 + yMod, 1, WHITE, spRot);
+			arrowRot += .3;
+			DrawPic(&arrowT, 500, 500, GetScreenWidth() / 5, GetScreenHeight() * 2 / 4, 1, WHITE, arrowRot);
+
+
+			DrawScope(scopeT);
+
+			//end the drawing
+			EndDrawing();
+
+			//Check for clicks
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+				clickedButton = buttonHovering;
+			}
+			if (clickedButtonY > GetScreenHeight() / 2) {
+				if (clickedButton == 3) {
+					//SETTINGS
+					while (true) {
+						if (IsKeyPressed(KEY_ENTER)) {
+							break;
+						}
+
+						//Draw menu
+						//Begin drawing
+						BeginDrawing();
+						//Clear the background
+						ClearBackground(BLACK);
+
+						DrawPic(&howToPlayT, GetScreenWidth(), GetScreenHeight(), 0, 0, 0, WHITE, 0);
+
+						//end the drawing
+						EndDrawing();
+					}
+					clickedButton = 0;
+					clickedButtonY = 0;
+					arrowRot = 0;
+				}
+				else if (clickedButton == 2) {
+					menu = false;
+					singlePlayer = false;
+					break;
+				}
+				else if (clickedButton == 1) {
+					menu = false;
+					singlePlayer = true;
+					break;
+				}
+			}
+			//Check for escape
+			if (IsKeyPressed(KEY_ESCAPE)) { exit(0); }
 		}
 
+		//Launch the standard game
+		GameLoop(pmanager, streetT, scopeT);
+		
+	}
+	void GameLoop(PictureManager* pmanager, Texture2D* streetT, Texture2D* scopeT) {
+		
+			//Make character
+			Character* characters = new Character[characterNum];
+			//Set the picture manager
+			for (int i = 0; i < characterNum; i++) {
+				characters[i].pmanager = pmanager;
+			}
+			//Game restart loop
+			while (!exitToMenu) {
+
+				if (restartGame) {
+					restartGame = false;
+					//Set varibles
+					paused = true;
+					winner = 0;
+					timeTaken = 0;
+					shotsTaken = 0;
+					//Start game
+					PlayGame(pmanager, characters, streetT, scopeT);
+				}
+			}
+			
+			
+		
+		
+		
 	}
 	void PlayGame(PictureManager * pmanager,Character characters[], Texture2D *streetT, Texture2D * scopeT) {
 
@@ -128,14 +269,13 @@ public:
 		//Load hints
 		int h1 = GetRandomValue(0, 7);
 		int h2 = getHintTwo(h1);
-		Texture2D* info1 = characters[0].characerParts[h1];//
+		Texture2D* info1 = characters[0].characerParts[h1];
 		Texture2D* info2 = characters[0].characerParts[h2];
-		//Contact person
 		Texture2D* info3 = (characters[0].characerParts[getHintThree(h1,h2)]);
 		
 		//std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
-		while (!WindowShouldClose() && !restartGame) {
+		while (!restartGame) {
 
 			DoLogic(characters);
 
@@ -159,8 +299,8 @@ public:
 				DrawScope(scopeT);
 			}
 
-			if (paused) {
-				DrawPic(&arrowT, 1400*zscale(&characters[0]), 1400*zscale(&characters[0]), (characters[0].x + xOffset) * scale, (characters[0].y + yOffset) * scale, 1, WHITE);
+			if (paused && (winner != 0 || !singlePlayer)) {
+				DrawPic(&arrowT, 1400*zscale(&characters[0]), 1400*zscale(&characters[0]), (characters[0].x + xOffset) * scale, (characters[0].y + yOffset) * scale, 1, WHITE, 0);
 			}
 
 			DrawInfo(characters, info1, info2, info3);
@@ -168,7 +308,22 @@ public:
 			//end the drawing
 			EndDrawing();
 
-
+			//Check for escape
+			if (IsKeyPressed(KEY_ESCAPE)) {
+				//Go back to main menu
+				clickedButton = 0;
+				clickedButtonY = 0;
+				arrowRot = 0;
+				menu = true;
+				//exitToMenu = true;
+				//restartGame = true;
+				//If you got here, we must be going back to the main menu
+				//exitToMenu = false;
+				//restartGame = false;
+				GamManager theGame;
+				theGame.InitializeGame();
+				exit(0);
+			}
 		}
 
 	}
@@ -382,6 +537,7 @@ public:
 		
 	}
 	void DrawStreat(Texture2D * sT) {
+
 		float wPicture = sT->width;
 		float hPicture = sT->height;
 		float drawW = GetScreenWidth()*2;
@@ -488,18 +644,18 @@ public:
 		/////////WIN CONDITIONS
 		DrawWinConditions(ch, theDead);
 	}
-	void DrawPic(Texture2D* t, float w, float h, float x, float y, int center, Color color) {
+	void DrawPic(Texture2D* t, float w, float h, float x, float y, int center, Color color, float rotation) {
 
 		float wPicture = t->width;
 		float hPicture = t->height;
 		float drawW = w;
 		float drawH = h;
-		DrawTexturePro(*t, Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ x,y,drawW,drawH }, Vector2{ drawW/2* center,drawH/2*center }, 0, color);
+		DrawTexturePro(*t, Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ x,y,drawW,drawH }, Vector2{ drawW/2* center,drawH/2*center }, rotation, color);
 
 	}
 	void DrawClue(Texture2D* sT, float xoff) {
 		
-		DrawPic(sT, 200, 300, (float)(100) + xoff, 230, 0, WHITE);
+		DrawPic(sT, 200, 300, (float)(100) + xoff, 230, 0, WHITE, 0);
 	}
 	void DrawWinConditions(Character ch[], int theDead) {
 		//SNIPER WINS!!
@@ -520,17 +676,17 @@ public:
 		}
 		//AGENT WINS!!
 		else if (winner == 2) {
-			const string winner = "THE AGENT WINS!";
+			const string winner = "THE ASSASSIN WINS!";
 			char arr[20];
 			strcpy_s(arr, winner.c_str());
 			DrawText(arr, 300, 400, 120, GREEN);
 		}
 		//SNIPER WINS!! WRONG CONTACT
 		else if (winner == 3) {
-			const string winner = "THE AGENT CONTACTED THE WRONG PERSON!";
-			char arr[60];
+			const string winner = "THE ASSASSIN CONTACTED THE WRONG PERSON!";
+			char arr[62];
 			strcpy_s(arr, winner.c_str());
-			DrawText(arr, 100, 400, 100, DARKPURPLE);
+			DrawText(arr, 100, 400, 60, DARKPURPLE);
 		}
 	}
 	void doAssassination(Character c[]) {
@@ -669,7 +825,19 @@ public:
 		}
 		return false;
 	}
-
+	bool insidePic(float wp, float hp, float xp, float yp, float x, float y, int centred) {
+		if (centred == 1) {
+			if (x > xp - wp / 2 && x < xp + wp / 2 && y > yp - hp / 2 && y < yp + hp / 2) {
+				return true;
+			}
+		}
+		else {
+			if (x > xp && y > yp && x < xp + wp && y < yp + hp) {
+				return true;
+			}
+		}
+		return false;
+	}
 	bool touching(Character * c1, Character * c2, float aReq) {
 		float z1 = zscale(c1);
 		float z2 = zscale(c2);
