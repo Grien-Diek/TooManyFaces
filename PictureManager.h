@@ -17,7 +17,7 @@ public:
 	static const int mouthN = 8;
 	static const int eyesN = 9;
 	static const int hairN = 11;
-	static const int hatN = 5;
+	static const int hatN = 8;
 
 
 
