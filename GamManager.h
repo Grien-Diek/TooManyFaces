@@ -20,8 +20,17 @@ public:
 	float xOffset = 0;
 	float yOffset = 0;
 
-	//
+	//Gamemode stuff
+	enum GameMode { assassin, contact, police, thugs };
+	GameMode gameMode = assassin;
+
 	bool singlePlayer = false;
+
+	int badguys = 7;
+	int victimsToWin = 8;
+	int hints = 3;
+
+	//
 	//Scope stuff
 	float xOffsetS = 0;
 	float yOffsetS = 0;
@@ -60,6 +69,7 @@ public:
 	bool stabbed = false;
 	Character* poisoned;
 	float poisonDelay = 0;
+	int someonesAttacking = -1;
 
 	//Menu stuff
 	bool exitToMenu = false;
@@ -76,6 +86,9 @@ public:
 	string message = "";
 	float charactersOfMessage = 0;
 	float messageSpeed = .32;
+	int choices = 0;
+	Character* characterStore;
+	int useCutSceneCharacter = -1;
 
 	//early initialize
 	//bool touching(Character* c1, Character* c2);
@@ -119,6 +132,7 @@ public:
 		Texture2D menuMultiPlayer = LoadTexture("./assets/multiPlayerButton.png");
 		Texture2D targetT = LoadTexture("./assets/Target.png");
 		Texture2D howToPlayT = LoadTexture("./assets/howtoplay.png");
+		Texture2D multiplayerT = LoadTexture("./assets/multiplayer.png");
 
 		while (menu) {
 
@@ -215,14 +229,78 @@ public:
 					arrowRot = 0;
 				}
 				else if (clickedButton == 2) {
-					menu = false;
-					singlePlayer = false;
-					break;
+					int breakType = -1;
+					//SETTINGS
+					while (true) {
+						if (IsKeyPressed(KEY_ENTER)) {
+							breakType = 1;
+							break;
+						}
+						else if (IsKeyPressed(KEY_KP_1)) {
+							breakType = 2;
+							break;
+						}
+						else if (IsKeyPressed(KEY_KP_2)) {
+							breakType = 3;
+							break;
+						}
+						else if (IsKeyPressed(KEY_KP_3)) {
+							breakType = 4;
+							break;
+						}
+
+						//Draw menu
+						//Begin drawing
+						BeginDrawing();
+						//Clear the background
+						ClearBackground(BLACK);
+
+						DrawPic(&multiplayerT, GetScreenWidth(), GetScreenHeight(), 0, 0, 0, WHITE, 0);
+
+						//end the drawing
+						EndDrawing();
+					}
+					if (breakType == 1) {
+						clickedButton = 0;
+						clickedButtonY = 0;
+						arrowRot = 0;
+					}
+					else if (breakType == 2) {
+						characterNum = 30;
+						victimsToWin = 6;
+						scale = 2.1;
+
+						gameMode = assassin;
+						menu = false;
+						singlePlayer = false;
+						break;
+					}
+					else if (breakType == 3) {
+
+						characterNum = 90;
+						scale = 1.7;
+
+						gameMode = contact;
+						menu = false;
+						singlePlayer = false;
+						break;
+					}
+					else if (breakType == 4) {
+						characterNum = 90;
+						victimsToWin = 10;
+						scale = 1.8;
+
+						gameMode = thugs;
+						menu = false;
+						singlePlayer = false;
+						break;
+					}
+
 				}
 				else if (clickedButton == 1) {
 					menu = false;
 					singlePlayer = true;
-					cutSceneFirst(pmanager);
+					cutSceneFirst(pmanager, streetT,scopeT);
 					break;
 				}
 			}
@@ -242,6 +320,8 @@ public:
 			for (int i = 0; i < characterNum; i++) {
 				characters[i].pmanager = pmanager;
 			}
+
+
 			//Game restart loop
 			while (!exitToMenu) {
 
@@ -270,18 +350,26 @@ public:
 			characters[i].StartCharacter();
 			characters[i].setUpPictures();
 		}
+		if (useCutSceneCharacter != -1) {
+			for (int i = 0; i < 8; i++) {
+				characters[useCutSceneCharacter].characterParts[i] = characterStore->characterParts[i];
+				characters[useCutSceneCharacter].characterColor[i] = characterStore->characterColor[i];
+			}
+		}
+
+		LaunchGameMode(characters);
 
 		//Set up player character
 		if (!singlePlayer) {
-			characters[0].setUpPlayer();
+			characters[0].setUpPlayerAssassin();
 		}
 
 		//Load hints
 		int h1 = GetRandomValue(0, 7);
 		int h2 = getHintTwo(h1);
-		Texture2D* info1 = characters[0].characerParts[h1];
-		Texture2D* info2 = characters[0].characerParts[h2];
-		Texture2D* info3 = (characters[0].characerParts[getHintThree(h1,h2)]);
+		Texture2D* info1 = characters[0].characterParts[h1];
+		Texture2D* info2 = characters[0].characterParts[h2];
+		Texture2D* info3 = (characters[0].characterParts[getHintThree(h1,h2)]);
 		
 		//std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
@@ -338,14 +426,56 @@ public:
 
 	}
 
-	void cutSceneFirst(PictureManager* pmanager) {
+	void LaunchGameMode(Character ch[]) {
 
+		if (gameMode == assassin) {
+
+			if (singlePlayer) {
+				ch[0].setUpAiAssassin();
+			}else{
+				ch[0].setUpPlayerAssassin();
+			}
+		}
+		else if (gameMode == contact) {
+
+			ch[0].setUpPlayerAssassin();
+			
+		}
+		else if (gameMode == police) {
+
+		}
+		else if (gameMode == thugs) {
+			//In THUG there are multiple badguys that all look the same and try to kill people!
+
+			int includeFirst = 1;
+			//If it is single player make the 0 character a badguy too
+			if (singlePlayer) { includeFirst = 0; }
+
+			for (int p = includeFirst; p < badguys; p++) {
+
+				ch[p].civilian = false;
+
+				for (int i = 0; i < 8; i++) {
+					ch[p].characterParts[i] = ch[0].characterParts[i];
+				}
+			}
+		}
+
+	}
+
+	void cutSceneFirst(PictureManager* pmanager, Texture2D* streetT, Texture2D* scopeT) {
+
+		float smod = 1;
+		int theMugger = -1;
+
+		Color textColor = WHITE;
 
 		Texture2D menuBackdrop = LoadTexture("./assets/streat.png");
-
+		Texture2D roomT = LoadTexture("./assets/room2.png");
+		Texture2D pointerT = LoadTexture("./assets/pointer.png");
 		//Make character
 		scale = 6;
-		characterNum = 2;
+		characterNum = 6;
 		Character* ch = new Character[characterNum];
 		//Set the picture manager
 		for (int i = 0; i < characterNum; i++) {
@@ -353,6 +483,9 @@ public:
 			ch[i].scale = scale;
 			ch[i].StartCharacter();
 			ch[i].setUpPictures();
+			ch[i].x = -100*i;
+			ch[i].y = GetScreenHeight() / 5 * 4 / scale;
+			
 		}
 
 		//Set starting locations
@@ -360,19 +493,30 @@ public:
 		ch[0].y = GetScreenHeight() / 5*4 / scale;
 		ch[1].x = -130 / scale;
 		ch[1].y = GetScreenHeight() / 5 * 4 / scale;
-		ch[1].v.x = .5;
-		ch[0].v.x = .2;
+		ch[1].v.x = 1;
+		ch[0].v.x = .5;
 
-		ch[0].characerParts[4] = &(pmanager->mouth[6]);
+		ch[0].characterParts[4] = &(pmanager->mouth[6]);
+
+		characterStore = &ch[1];
+		useCutSceneCharacter = 0;
+		hints = 0;
 
 		timeCS = 0;
-
+		continues = 1;
 		while(true){
-			
+			if (IsKeyDown(KEY_SPACE)) {
+				SetTargetFPS(1000);
+				smod = 10;
+			}
+			else {
+				SetTargetFPS(100);
+				smod = 1;
+			}
 			//============================Cutscene
 			
 			if (timeCS < 3) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime()* smod;
 				if (stage == 0) { message = "Your day was going terribly.\nYou had just got fired from your job.";stage++; charactersOfMessage = 0;
 				}
 				if ((int)charactersOfMessage < message.length()) {
@@ -380,7 +524,7 @@ public:
 				}
 			}
 			else if (timeCS < 6) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime() * smod;
 				if (stage == 1) { message = "The $50 in your pocket was all you had to your name."; stage++; charactersOfMessage = 0;
 				}
 				if ((int)charactersOfMessage < message.length()) {
@@ -388,7 +532,7 @@ public:
 				}
 			}
 			else if (timeCS < 11) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime() * smod;
 				if (stage == 2) { message = "But you decided to try to be happy anyway.\nAnd you started to smile."; stage++; charactersOfMessage = 0; }
 				if ((int)charactersOfMessage < message.length()) {
 					charactersOfMessage += messageSpeed;
@@ -398,30 +542,30 @@ public:
 				}
 			}
 			else if (timeCS < 15 && continues > 0) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime() * smod;
 				if (stage == 3) { message = "You felt better for a little while...\nBut then a man began approuching..."; stage++; charactersOfMessage = 0; }
 				if ((int)charactersOfMessage < message.length()) {
 					charactersOfMessage += messageSpeed/2;
 				}
 				if (ch[1].x < ch[0].x-20) {
-					ch[1].x += GetFrameTime() * ((ch[0].x - 20)-ch[1].x);
+					ch[1].x += GetFrameTime() * smod * ((ch[0].x - 20)-ch[1].x);
 				}
 			}
 			else if (timeCS < 20 && continues > 0) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime() * smod;
 				if (stage == 4) { message = "'GIVE ME ALL YOUR MONEY!' He yelled.             \nYou Felt your smile disappearing."; stage++; charactersOfMessage = 0; }
 				if ((int)charactersOfMessage < message.length()) {
 					charactersOfMessage += messageSpeed;
 				}
 				if (ch[0].partRotation[4] > 0) {
-					ch[0].partRotation[4] -= GetFrameTime() * 180;
+					ch[0].partRotation[4] -= GetFrameTime() * smod * 180;
 				}
 
 				ch[1].partRotation[4] = GetRandomValue(-10,10);
 				
 			}
 			else if (timeCS < 26 && continues > 0) {
-				timeCS += GetFrameTime();
+				timeCS += GetFrameTime() * smod;
 				if (stage == 5) { message = "Feeling his hard hand against your chest, anger flared up inside of you.\n What had you done to deserve how fate treated you!!!!!!!!!!!"; stage++; charactersOfMessage = 0; }
 				if ((int)charactersOfMessage < message.length()) {
 					charactersOfMessage += messageSpeed;
@@ -429,23 +573,220 @@ public:
 
 				for (int pa = 0; pa < 8; pa++) {
 					if (ch[0].partRotation[0] < 90) {
-						ch[0].partRotation[pa] += GetFrameTime() * 90*4;
+						ch[0].partRotation[pa] += GetFrameTime() * smod * 90*4;
 					}
 				}
 				if (ch[0].partRotation[0] < 90) {
-					ch[0].y += GetFrameTime() * 90;
+					ch[0].y += GetFrameTime() * smod * 90;
 				}
 			}
-			else if (timeCS < 50 && continues > 0) {
-				timeCS += GetFrameTime();
-				if (stage == 6) { message = "'Come back! I need that money!' You heard your faint voice call after him...\nHe dissapeared into the distance.\nYou Felt bruised.\nYour left leg hurt a lot..."; stage++; charactersOfMessage = 0; }
+			else if (timeCS < 36 && continues > 0) {
+				timeCS += GetFrameTime() * smod;
+				if (stage == 6) { message = "'Come back! I need that money!' You heard your faint voice call after him...\nHe dissapeared into the distance.\nYou Feel bruised.\nYou struggle to stand..."; stage++; charactersOfMessage = 0; }
 				if ((int)charactersOfMessage < message.length()) {
-					charactersOfMessage += messageSpeed / 5;
+					charactersOfMessage += messageSpeed / 3;
 				}
-				if (ch[1].x > -5) {
-					ch[1].x -= GetFrameTime() * (-5-(ch[0].x));
+				if (ch[1].x < GetScreenWidth()/scale+200 && ch[1].v.y == 0) {
+					ch[1].x -= GetFrameTime() * smod * (-5-(ch[0].x));
+				}
+				else {
+					ch[1].v.y = .1;
+					ch[1].x = -100;
+					ch[1].y = ch[2].y;
 				}
 				ch[0].partRotation[4] = GetRandomValue(100, 80);
+			}
+			else if (timeCS < 40 && continues > 0) {
+				timeCS += GetFrameTime() * smod;
+				if (stage == 7) { message = "Struggling to your feet, you feel the angle pounding in your chest.\n'What now?' you ask yourself."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+
+				for (int pa = 0; pa < 8; pa++) {
+					if (ch[0].partRotation[0] > 0) {
+						ch[0].partRotation[pa] -= GetFrameTime() * smod * 90 * 4;
+					}
+				}
+				if (ch[0].partRotation[0] > 0) {
+					ch[0].y += GetFrameTime() * smod * 90;
+				}
+			}
+			else if (timeCS < 44 && continues > 0) {
+				timeCS += GetFrameTime() * smod;
+				if (stage == 8) { message = "You pull out your phone to call the Police.        \nBut, you pause,      \nYou remember the hunting rifle in your appartment...\nThe police probably won't catch him.\nEven if they do, they won't give him much of a sentence..."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+
+				ch[0].partRotation[5] = GetRandomValue(-2.5,2.5);
+				
+			}
+			else if (timeCS < 46 && continues > 0) {
+				continues = 1;
+				if (stage == 9) { message = "You have to decide...\nPress [P] to call the police.\nPress [S] to get your hunting rifle..."; stage++; charactersOfMessage = 0; }
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+				else {
+					timeCS += GetFrameTime() * smod;
+				}
+
+				ch[0].partRotation[5] = GetRandomValue(-2.5, 2.5);
+
+			}
+			else if (continues == 1) {
+				if (stage == 10) { stage++; choices = 0;}
+
+				if(IsKeyPressed(KEY_P) && choices == 0){ choices = 1; }
+				else if (IsKeyPressed(KEY_S) && choices == 0) { choices = 2; }
+
+				if (IsKeyPressed(KEY_ENTER) && choices != 0) { continues = 2; }
+
+				if (choices == 1) {
+					if (stage == 11) { message = "You quickly dile 111, hoping that they can catch this guy.\nYou know this was the right thing to do...\n[Press ENTER to continue]"; stage++; charactersOfMessage = 0; }
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+				}else if (choices == 2) {
+					if (stage == 11) { message = "You run home and get your sniper rifle.\nYou'll teach that guy to mess with you!\n[Press ENTER to continue]"; stage++; charactersOfMessage = 0; }
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+					
+					ch[0].x += GetFrameTime() * smod *30;
+					
+				}
+			}
+			else if (continues == 2) {
+			
+				if (timeCS < 60 && choices == 1 ) {
+					timeCS += GetFrameTime() * smod;
+
+					if (IsKeyPressed(KEY_ENTER)) { continues = 3; }
+
+					if (stage == 12) { message = "The next day, you are called to the police station.\n'We think we caught him!' A kind police officer tells you.\nYou just have to pick him out of the line up, just to make sure.\n[Press ENTER to continue]"; stage++; charactersOfMessage = 0;
+						menuBackdrop = roomT;
+						textColor = BLACK;
+						//SET UP LINE UP
+						//Make it so all the other characteres look the same, except for 1 part
+						theMugger = GetRandomValue(1, characterNum - 1);
+
+						for (int i = 1; i < characterNum; i++) {
+							
+							ch[i].v.x = 1;
+							//Make them all look the same (except for shirt color)
+							if (i != 1) {
+								for (int pr = 0; pr < 8; pr++) {
+									ch[i].characterParts[pr] = ch[1].characterParts[pr];
+								}
+							}
+
+						}
+						for (int i = 1; i < characterNum; i++) {
+							int differences = GetRandomValue(2, 3);
+							//Set NUM amount of parts to look different if you aren't the mugger
+							for (int num = 0; num < differences; num++) {
+								if (theMugger != i) {
+									int difference = GetRandomValue(0, 7);
+
+									//Body,head,feet,hands,mouth,eyes, hair, hat
+
+									if (difference == 0) { ch[i].characterParts[0] = &pmanager->body[GetRandomValue(1, pmanager->bodyN - 1)]; }
+									if (difference == 1) { ch[i].characterParts[1] = &pmanager->head[GetRandomValue(1, pmanager->headN - 1)]; }
+									if (difference == 2) { ch[i].characterParts[2] = &pmanager->feet[GetRandomValue(1, pmanager->feetN - 1)]; }
+									if (difference == 3) { ch[i].characterParts[3] = &pmanager->hands[GetRandomValue(0, pmanager->handsN - 1)]; }
+									if (difference == 4) { ch[i].characterParts[4] = &pmanager->mouth[GetRandomValue(0, pmanager->mouthN - 1)]; }
+									if (difference == 5) { ch[i].characterParts[5] = &pmanager->eyes[GetRandomValue(1, pmanager->eyesN - 1)]; }
+									if (difference == 6) { ch[i].characterParts[6] = &pmanager->hair[GetRandomValue(1, pmanager->hairN - 1)]; }
+									if (difference == 7) { ch[i].characterParts[7] = &pmanager->hat[GetRandomValue(0, pmanager->hatN - 1)]; }
+
+								}
+							}
+
+						}
+					}
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+				}
+				else if (timeCS < 60 && choices == 2) {
+					timeCS += GetFrameTime() * smod;
+					if (stage == 12) { message = "You get a ping from your credit card. You know where he is. But can you remember what he looks like..?\nPress [ENTER] to continue."; stage++; charactersOfMessage = 0; }
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+					else {
+						if (IsKeyPressed(KEY_ENTER)) {
+							break;
+						}
+					}
+				}
+			}
+			else if (continues == 3) {
+				choices = 0;
+
+				if (IsKeyPressed(KEY_ENTER)) { continues = 4; }
+
+				if (stage == 13) {
+					message = "You watch as a bunch of people walk into the room. You struggle to tell which one was your mugger...\n'Which one is it?' The officer asks.\n[Press ENTER to continue]"; stage++; charactersOfMessage = 0;
+				}
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+				for (int i = 1; i < characterNum; i++) {
+					if (ch[i].x < GetScreenWidth() / scale / 7 * i) {
+						ch[i].x += GetFrameTime() * GetScreenWidth() / scale * 2 / 3 / 2;
+					}
+				}
+				ch[0].x += GetFrameTime() * GetScreenWidth() / scale / 2;
+
+				
+			}
+			else if (continues == 4) {
+
+				if (stage == 14) {
+					choices = -1;
+					message = "Click on the person who mugged you.\nThey might have changed their shirt, so ignore their colors..."; stage++; charactersOfMessage = 0;
+				}
+				if ((int)charactersOfMessage < message.length()) {
+					charactersOfMessage += messageSpeed;
+				}
+				//Make them shake
+				for (int i = 1; i < characterNum; i++) {
+					if (insidePic(ch[i].partSizes.x/3, ch[i].partSizes.y/3, ch[i].x, ch[i].y, (GetMouseX() + xOffsetS) / scale, (GetMouseY() + yOffsetS) / scale, 1)) {
+						for (int part = 1; part < 8; part++) {
+							ch[i].partRotation[part] = GetRandomValue(-3, 3);
+						}
+					}
+				}
+				//
+				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+					for (int i = 1; i < characterNum; i++) {
+						if (insidePic(ch[i].partSizes.x/3, ch[i].partSizes.y/3, ch[i].x, ch[i].y, (GetMouseX()+xOffsetS)/scale, (GetMouseY() + yOffsetS) /scale, 1)) {
+							choices = i;
+						}
+					}
+				}
+
+				if (choices == theMugger) {
+					if (stage == 15) { message = "You managed to reconize him, and he was arrested.\nThats when you realized what job you were going to try to get next...\nYou are going to apply to the POLICE COLLEGE!!\n[Press Enter to continue]"; stage++; charactersOfMessage = 0; }
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+					if (IsKeyPressed(KEY_ENTER)) { break; }
+
+				}
+				else if(choices != theMugger && choices != -1) {
+					if (stage == 15) { message = "'No, sorry.' The officer said, looking sad. 'That wasn't the man we brought in.\nLooks like we didn't catch him after all...'\nYOU LOOSE"; stage++; charactersOfMessage = 0; }
+					if ((int)charactersOfMessage < message.length()) {
+						charactersOfMessage += messageSpeed;
+					}
+					else {
+						break;
+					}
+				}
+			
 			}
 			else {
 				if (IsKeyPressed(KEY_ENTER)) {
@@ -455,28 +796,51 @@ public:
 
 
 			//============================
-			
-			ch[0].animateWhileWalking();
-			ch[1].animateWhileWalking();
+			for (int i = 1; i < characterNum; i++) {
+				ch[i].animateWhileWalking();
+			}
 
 			//Begin drawing
 			BeginDrawing();
 			//Clear the background
 			ClearBackground(BLACK);
 
+
 			//What to draw:
 			DrawPic(&menuBackdrop, GetScreenWidth(), GetScreenHeight(), 0, 0, 0, WHITE, 0);
 			//Draw Characters
 			DrawInHeightOrder(ch);
 
+			if (stage == 15 && continues == 4) {
+				DrawScope(&pointerT);
+			}
+
 			//Draw label
 			string text = message.substr(0,(int)charactersOfMessage);
 			char arr[400];
 			strcpy_s(arr, text.c_str());
-			DrawText(arr, 100, 100, 30, WHITE);
+			DrawText(arr, 100, 100, 30, textColor);
 
 			//end the drawing
 			EndDrawing();
+		}
+		//LOAD GAME
+		if (choices == 1) {
+			scale = 3;
+			characterNum = 5;
+
+			//Launch the standard game
+			GameLoop(pmanager, streetT, scopeT);
+		}
+		else if (choices == 2) {
+
+			gameMode = assassin;
+			characterNum = 22;
+			victimsToWin = 3;
+			scale = 2.1;
+
+			//Launch the standard game
+			GameLoop(pmanager, streetT, scopeT);
 		}
 
 	}
@@ -590,23 +954,59 @@ public:
 			//Check to see if your ontop of the contact agent
 			if (touching(&ch[0], &ch[1], 1.1)) {
 				//You contacted the agent!
-				winner = 2;
+				winner = 4;
+				paused = true;
 
 			}
 			else {
 				//Failed to contact the agent
-				winner = 3;
+				winner = 5;
+				paused = true;
 			}
 		}
-
-		//ATTACkS!!!!!!!!!!!!!!!!!!!
+		//-------------------
+		//================Attack stuff
 		doAssassination(ch);
-		int attackT = -1;
-		//AI kill
-		if (ch[0].player != true && !paused) {
-			attackT = GetRandomValue(1, 63);
+
+		//================PLAYER ATTACKS
+		if (ch[0].player == true) {
+
+			int attackType = -1;
+
+			if (IsKeyPressed(KEY_F)) { attackType = 2; }
+			else if (IsKeyPressed(KEY_G)) { attackType = 1; }
+			else if (IsKeyPressed(KEY_H)) { attackType = 3; }
+
+			if (attackType != -1 && someonesAttacking == -1) {
+				someonesAttacking = 0;
+				AttackChecks(ch, attackType);
+			}
 		}
-		if (IsKeyPressed(KEY_G) || attackT == 1) {
+		
+		//================AI ATTACKS
+		if (gameMode == assassin || gameMode == thugs && !paused) {
+			for (int p = 0; p < badguys; p++) {
+				//Anyone who is not a civilian in an assassin in Assassin gamemode
+				if (!ch[p].civilian && !ch[p].player) {
+
+					int attackType = -1;
+
+					attackType = GetRandomValue(1, 63);//Only attacks between 1-3, so 61 out of 63 times it doesn't attack
+					
+					if (attackType <= 3 && someonesAttacking == -1) {
+						someonesAttacking = p;
+						AttackChecks(ch, attackType);
+					}
+				}
+			}
+		}
+		
+
+	}
+	void AttackChecks(Character ch[], int attackT) {
+		
+		//ATTACkS!!!!!!!!!!!!!!!!!!!
+		if (attackT == 1) {
 			if (canAttack <= 0) {
 				canAttack = 3;
 				attack = shoot;
@@ -614,17 +1014,17 @@ public:
 				if (attack == shoot) {
 					timeLeftKill = 3;
 					shootDelay = (float)(GetRandomValue(2000, maxShootDelay * 10000)) / 10000;
-					shotLoc.x = ch[0].x + GetRandomValue(-140, 140);
-					shotLoc.y = ch[0].y + GetRandomValue(-100, 100);
+					shotLoc.x = ch[someonesAttacking].x + GetRandomValue(-140, 140);
+					shotLoc.y = ch[someonesAttacking].y + GetRandomValue(-100, 100);
 
 				}
 			}
 		}
-		else if (IsKeyPressed(KEY_F) || attackT == 2) {
+		else if (attackT == 2) {
 			if (canAttack <= 0) {
 				canAttack = 5;
 				attack = stab;
-					//stab
+				//stab
 				if (attack == stab) {
 					timeLeftKill = 2.3;
 					darkScope = true;
@@ -632,19 +1032,21 @@ public:
 				}
 			}
 		}
-		else if (IsKeyPressed(KEY_H) || attackT == 3) {
+		else if (attackT == 3) {
 			if (canAttack <= 0) {
 				canAttack = 4;
 				attack = poison;
 				//poison
 				if (attack == poison) {
 					bool touch = false;
-					for (int i = 1; i < characterNum; i++) {
-						if (touching(&ch[0], &ch[i], .3)) {
-							if (ch[i].life > 0) {
-								poisoned = &ch[i];
-								touch = true;
-								break;
+					for (int i = 0; i < characterNum; i++) {
+						if (ch[i].civilian) {
+							if (touching(&ch[someonesAttacking], &ch[i], .2)) {
+								if (ch[i].life > 0) {
+									poisoned = &ch[i];
+									touch = true;
+									break;
+								}
 							}
 						}
 					}
@@ -656,6 +1058,7 @@ public:
 
 			}
 		}
+		
 	}
 
 	float zscale(Character* c) {
@@ -675,13 +1078,13 @@ public:
 		//Second draw body
 		for (int i = 0; i < 8; i++) {
 
-			float wPicture = characters->characerParts[i]->width;
-			float hPicture = characters->characerParts[i]->height;
+			float wPicture = characters->characterParts[i]->width;
+			float hPicture = characters->characterParts[i]->height;
 			float drawW = characters->partSizes.x * scale * zscale(characters);
 			float drawH = characters->partSizes.y * scale * zscale(characters);
 
 
-			DrawTexturePro(*(characters->characerParts[i]), Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ (characters->x + xOffset) * scale,(characters->y + yOffset) * scale,drawW,drawH }, Vector2{ drawW / 2,drawH / 2 }, characters->partRotation[i], characters->characterColor[i]);
+			DrawTexturePro(*(characters->characterParts[i]), Rectangle{ 0,0,wPicture,hPicture }, Rectangle{ (characters->x + xOffset) * scale,(characters->y + yOffset) * scale,drawW,drawH }, Vector2{ drawW / 2,drawH / 2 }, characters->partRotation[i], characters->characterColor[i]);
 
 
 		}
@@ -755,40 +1158,61 @@ public:
 		
 		int theDead = 0;
 		for (int i = 0; i < characterNum; i++) {
-			if (ch[i].life <= 0) {
+			if (ch[i].life <= 0 && ch[i].civilian) {
 				theDead++;
 			}
 		}
 		
 		//Draw label for shots taken
 		const string bullets = "SHOTS TAKEN: " + to_string(shotsTaken);
-		char arr[20];
+		char arr[30];
 		strcpy_s(arr, bullets.c_str());
 		DrawText(arr, 100, 50, 30, RED);
 		//Time taken
 		const string time = "VICTIMS: " + to_string((int)theDead) + "\nEliminate the agent:";
-		char arrT[50];
+		char arrT[100];
 		strcpy_s(arrT, time.c_str());
 		DrawText(arrT, 100, 100, 30, RED);
 
 		//HINTS to contact
-		if (canAttack <= 0) {
-			const string cT = "[F]: Stab\n[G]: Shoot\n[H]: Poison";
-			char arrCT[40];
-			strcpy_s(arrCT, cT.c_str());
-			DrawText(arrCT, GetScreenWidth() - 400, 100, 30, GREEN);
+		if (gameMode == assassin || gameMode == thugs) {
+			if (canAttack <= 0) {
+				const string cT = "KILL EVERYONE!\n[F]: Stab\n[G]: Shoot\n[H]: Poison";
+				char arrCT[100];
+				strcpy_s(arrCT, cT.c_str());
+				DrawText(arrCT, GetScreenWidth() - 400, 100, 30, RED);
+			}
+		}
+		else if (gameMode == contact) {
+			if (canAttack <= 0) {
+				const string cT = "Find your contact in the crowd!\nHit [SPACE] to contact them before it's too late!";
+				char arrCT[100];
+				strcpy_s(arrCT, cT.c_str());
+				DrawText(arrCT, GetScreenWidth() - 500, 100, 30, BLUE);
+			}
 		}
 
 		//Draw the two clues
 		if (!paused) {
-			DrawClue(info1, 0);
-			DrawClue(info2, 0);
-			DrawClue(info3, 0);
-			for (int i = 0; i < 8; i++) {
-				int clueN = 1;
-				if (singlePlayer) { clueN = 0; }
-				DrawClue(ch[1].characerParts[i], GetScreenWidth() - 400);
+			if (gameMode == assassin || gameMode == contact) {
 
+				if (hints > 0) { DrawClue(info1, 0); }
+				if (hints > 1) {DrawClue(info2, 0);}
+				if (hints > 2) {DrawClue(info3, 0);}
+			}
+			//
+			if (gameMode == contact) {
+				for (int i = 0; i < 8; i++) {
+					//Draw the contact agent on the right
+					DrawClue(ch[1].characterParts[i], GetScreenWidth() - 400);
+				}
+			}
+			else if (gameMode == thugs) {
+				for (int i = 0; i < 8; i++) {
+					int clueN = 1;
+					if (gameMode) { clueN = 0; }
+					DrawClue(ch[1].characterParts[i], GetScreenWidth() - 400);
+				}
 			}
 		}
 
@@ -810,38 +1234,88 @@ public:
 		DrawPic(sT, 200, 300, (float)(100) + xoff, 230, 0, WHITE, 0);
 	}
 	void DrawWinConditions(Character ch[], int theDead) {
-		//SNIPER WINS!!
-		if ((ch[0].life <= 0 || timeTaken > 100) && winner == 0) {
-			winner = 1;
-			paused = true;
+		//Win conditions
+		if (gameMode == assassin || gameMode == contact) {
+			if ((ch[0].life <= 0) && winner == 0) {
+				winner = 1;
+				paused = true;
+			}
+			else if (timeTaken > 80 && winner == 0) {
+				winner = 2;
+				paused = true;
+			}
+			else if ((theDead >= victimsToWin) && winner == 0) {
+				winner = 3;
+				paused = true;
+			}
 		}
-		else if ((theDead > 7) && winner == 0) {
-			winner = 2;
-			paused = true;
+		else if (gameMode == thugs) {
+			bool anyAlive = false;
+			for (int p = 0; p < badguys; p++) {
+				//If any badguys are alive
+				if (ch[p].life > 0 && ch[p].civilian == false) {
+					anyAlive = true;
+				}
+			}
+			if (winner == 0 && !anyAlive) {
+				//If no badguys are alive
+				winner = 6;
+				paused = true;
+			}
+			if ((theDead >= victimsToWin) && winner == 0) {
+				winner = 7;
+				paused = true;
+			}
+
 		}
+		
 		//Draw the winner
 		if(winner == 1){
-			const string winner = "THE SNIPER WINS!";
-			char arr[20];
+			const string winner = "SNIPER WINS!\nAssassin was shot.";
+			char arr[100];
 			strcpy_s(arr, winner.c_str());
-			DrawText(arr, 300, 400, 120, RED);
+			DrawText(arr, 300, 400, 90, GREEN);
 		}
-		//AGENT WINS!!
 		else if (winner == 2) {
-			const string winner = "THE ASSASSIN WINS!";
-			char arr[20];
+			const string winner = "SNIPER WINS!\nAssassin ran out of time.";
+			char arr[100];
 			strcpy_s(arr, winner.c_str());
-			DrawText(arr, 300, 400, 120, GREEN);
+			DrawText(arr, 300, 400, 90, GREEN);
 		}
-		//SNIPER WINS!! WRONG CONTACT
 		else if (winner == 3) {
-			const string winner = "THE ASSASSIN CONTACTED THE WRONG PERSON!";
-			char arr[62];
+			const string winner = "THE ASSASSIN WINS!\n" + to_string(theDead) + " civilians are dead!";
+			char arr[100];
 			strcpy_s(arr, winner.c_str());
-			DrawText(arr, 100, 400, 60, DARKPURPLE);
+			DrawText(arr, 100, 400, 90, RED);
+		}
+		else if (winner == 4) {
+			const string winner = "THE AGENT WINS!\nHe handed over the info!";
+			char arr[100];
+			strcpy_s(arr, winner.c_str());
+			DrawText(arr, 100, 400, 90, ORANGE);
+		}
+		else if (winner == 5) {
+			const string winner = "THE SNIPER WINS!\nThe agent contacted the wrong person!";
+			char arr[100];
+			strcpy_s(arr, winner.c_str());
+			DrawText(arr, 100, 400, 90, GREEN);
+		}
+		else if (winner == 6) {
+			const string winner = "THE SNIPER WINS!\nAll thugs were killed!";
+			char arr[100];
+			strcpy_s(arr, winner.c_str());
+			DrawText(arr, 100, 400, 90, GREEN);
+		}
+		else if (winner == 7) {
+			const string winner = "THE THUGS WINS!\n" + to_string(theDead) + " civilians are dead!";
+			char arr[100];
+			strcpy_s(arr, winner.c_str());
+			DrawText(arr, 100, 400, 90, GREEN);
 		}
 	}
 	void doAssassination(Character c[]) {
+
+		int p = someonesAttacking;
 
 		canAttack -= GetFrameTime();
 
@@ -859,14 +1333,16 @@ public:
 					shooting = true;
 					//Reset the shoot delay
 					shootDelay = (float)(GetRandomValue(2000, maxShootDelay * 10000)) / 10000;
-					shotLoc.x = c[0].x + GetRandomValue(-140, 140);
-					shotLoc.y = c[0].y + GetRandomValue(-100, 100);
+					shotLoc.x = c[p].x + GetRandomValue(-140, 140);
+					shotLoc.y = c[p].y + GetRandomValue(-100, 100);
 					//shoot
-					for (int i = 1; i < characterNum; i++) {
-						if (locationInside(&c[i], shotLoc.x, shotLoc.y, .3)) {
-							if (c[i].life > 0 && GetRandomValue(0, 100) > 60) {
-								c[i].killed();
-								break;
+					for (int i = 0; i < characterNum; i++) {
+						if (c[i].civilian) {
+							if (locationInside(&c[i], shotLoc.x, shotLoc.y, .3)) {
+								if (c[i].life > 0 && GetRandomValue(0, 100) > 60) {
+									c[i].killed();
+									break;
+								}
 							}
 						}
 					}
@@ -903,11 +1379,13 @@ public:
 				if (attack == stab) {
 					stabbed = true;
 					//attack = shoot;
-					for (int i = 1; i < characterNum; i++) {
-						if (touching(&c[0], &c[i], .3)) {
-							if (c[i].life > 0) {
-								c[i].killed();
-								break;
+					for (int i = 0; i < characterNum; i++) {
+						if (c[i].civilian) {
+							if (touching(&c[p], &c[i], .3)) {
+								if (c[i].life > 0) {
+									c[i].killed();
+									break;
+								}
 							}
 						}
 					}
@@ -916,6 +1394,7 @@ public:
 
 		}
 		else {
+			someonesAttacking = -1;
 			shooting = false;
 			darkScope = false;
 		}

@@ -15,10 +15,14 @@ public:
 	PictureManager * pmanager;
 
 
-	Texture2D * characerParts[8];//Body,head,feet,hands,mouth,eyes, hair, hat
+	Texture2D * characterParts[8];//Body,head,feet,hands,mouth,eyes, hair, hat
 	Color characterColor[8];
 	float partRotation[8];
 	Vector2 partSizes = { 200,300 };
+
+	//Game mode varibles
+	bool civilian = true;
+
 	//Location of character
 	float x = 0;
 	float y = 0;
@@ -91,9 +95,10 @@ public:
 		}
 
 	}
-	void setUpPlayer() {
+	void setUpPlayerAssassin() {
 
 		player = true;
+		civilian = false;
 
 		MaxV = GetRandomValue(1500, 2000) / 1000;
 
@@ -101,6 +106,9 @@ public:
 			characterColor[i] = BLACK;
 			partRotation[i] = 0;
 		}
+	}
+	void setUpAiAssassin() {
+		civilian = false;
 	}
 
 	void SetVelocity() {
@@ -199,14 +207,14 @@ public:
 		if (pmanager != nullptr) {
 			//Initialize pictures
 			//Body,head,feet,hands,mouth,eyes, hair, hat
-			characerParts[0] = &pmanager->body[GetRandomValue(1, pmanager->bodyN-1)];
-			characerParts[1] = &pmanager->head[GetRandomValue(1, pmanager->headN-1)];
-			characerParts[2] = &pmanager->feet[GetRandomValue(1, pmanager->feetN-1)];
-			characerParts[3] = &pmanager->hands[GetRandomValue(0, pmanager->handsN-1)];
-			characerParts[4] = &pmanager->mouth[GetRandomValue(0, pmanager->mouthN-1)];
-			characerParts[5] = &pmanager->eyes[GetRandomValue(1, pmanager->eyesN-1)];
-			characerParts[6] = &pmanager->hair[GetRandomValue(1, pmanager->hairN-1)];
-			characerParts[7] = &pmanager->hat[GetRandomValue(0, pmanager->hatN-1)];
+			characterParts[0] = &pmanager->body[GetRandomValue(1, pmanager->bodyN-1)];
+			characterParts[1] = &pmanager->head[GetRandomValue(1, pmanager->headN-1)];
+			characterParts[2] = &pmanager->feet[GetRandomValue(1, pmanager->feetN-1)];
+			characterParts[3] = &pmanager->hands[GetRandomValue(0, pmanager->handsN-1)];
+			characterParts[4] = &pmanager->mouth[GetRandomValue(0, pmanager->mouthN-1)];
+			characterParts[5] = &pmanager->eyes[GetRandomValue(1, pmanager->eyesN-1)];
+			characterParts[6] = &pmanager->hair[GetRandomValue(1, pmanager->hairN-1)];
+			characterParts[7] = &pmanager->hat[GetRandomValue(0, pmanager->hatN-1)];
 		}
 		else {
 			cout << "NUUUUUUUUUUUUUUUUUUUUUUULLLLLLLLLLLLLLLL\n";
